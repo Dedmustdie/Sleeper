@@ -4,7 +4,7 @@
 <b> Sleeper </b> suspends the execution of the current thread until the time-out interval elapses.<br>
 
 ## Installation:
-CLI: `go install github.com/Dedmustdie/sleeper`
+CLI: `go install github.com/Dedmustdie/sleeper@<last release number>`
 
 ## Start:
 CLI: `sleeper <flags> <duration>`
