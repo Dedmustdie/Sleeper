@@ -1,4 +1,4 @@
-package main
+package utils
 
 import (
 	"errors"
@@ -6,7 +6,7 @@ import (
 	"time"
 )
 
-func calculateDuration(timeValue uint64, mode uint64) (time.Duration, error) {
+func CalculateDuration(timeValue uint64, mode uint64) (time.Duration, error) {
 	duration := time.Duration(timeValue)
 	switch mode {
 	case 1:
@@ -25,7 +25,7 @@ func calculateDuration(timeValue uint64, mode uint64) (time.Duration, error) {
 	return duration, nil
 }
 
-func getDocumentation(generalDocumentation string, flagsDocumentation []string) string {
+func GetDocumentation(generalDocumentation string, flagsDocumentation []string) string {
 	documentation := fmt.Sprintf("%s.\n", generalDocumentation)
 	for _, v := range flagsDocumentation {
 		documentation += v
@@ -33,10 +33,10 @@ func getDocumentation(generalDocumentation string, flagsDocumentation []string) 
 	return documentation
 }
 
-func formatFlagDocumentation(flagName string, documentationText string) string {
+func FormatFlagDocumentation(flagName string, documentationText string) string {
 	return fmt.Sprintf("-%s: %s.\n", flagName, documentationText)
 }
 
-func formatArgDocumentation(argumentName string, documentationText string) string {
+func FormatArgDocumentation(argumentName string, documentationText string) string {
 	return fmt.Sprintf("%s: %s.\n", argumentName, documentationText)
 }

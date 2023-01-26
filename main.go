@@ -3,53 +3,56 @@ package main
 import (
 	"flag"
 	"fmt"
+	"github.com/Dedmustdie/sleeper/config"
+	"github.com/Dedmustdie/sleeper/constants"
+	"github.com/Dedmustdie/sleeper/utils"
 	"strconv"
 	"time"
 )
 
 func main() {
-	cfg := Config{
-		defaultMode:           "3",
-		generalDocumentation:  "Sleeper suspends the execution of the current thread until the time-out interval elapses",
-		modeDocumentation:     "Duration value type: 1-Microsecond, 2-Millisecond, 3-Second, 4-Minute, 5-Hour",
-		helpDocumentation:     "Show documentation",
-		argumentDocumentation: "Sleeper duration (uint64)",
-		argumentName:          "<argument>",
-		modeSignature:         "m",
-		helpSignature:         "help",
+	cfg := config.Config{
+		DefaultMode:           "3",
+		GeneralDocumentation:  "Sleeper suspends the execution of the current thread until the time-out interval elapses",
+		ModeDocumentation:     "Duration value type: 1-Microsecond, 2-Millisecond, 3-Second, 4-Minute, 5-Hour",
+		HelpDocumentation:     "Show documentation",
+		ArgumentDocumentation: "Sleeper duration (uint64)",
+		ArgumentName:          "<argument>",
+		ModeSignature:         "m",
+		HelpSignature:         "help",
 	}
 
-	help := flag.Bool(cfg.helpSignature, defaultHelp,
-		cfg.helpDocumentation)
+	help := flag.Bool(cfg.HelpSignature, constants.DefaultHelp,
+		cfg.HelpDocumentation)
 
 	var modeCodeString string
-	flag.StringVar(&modeCodeString, cfg.modeSignature, cfg.defaultMode,
-		cfg.modeDocumentation)
+	flag.StringVar(&modeCodeString, cfg.ModeSignature, cfg.DefaultMode,
+		cfg.ModeDocumentation)
 	flag.Parse()
 
 	if *help {
-		fmt.Print(getDocumentation(cfg.generalDocumentation,
+		fmt.Print(utils.GetDocumentation(cfg.GeneralDocumentation,
 			[]string{
-				formatFlagDocumentation(cfg.helpSignature, cfg.helpDocumentation),
-				formatFlagDocumentation(cfg.modeSignature, cfg.modeDocumentation),
-				formatArgDocumentation(cfg.argumentName, cfg.argumentDocumentation),
+				utils.FormatFlagDocumentation(cfg.HelpSignature, cfg.HelpDocumentation),
+				utils.FormatFlagDocumentation(cfg.ModeSignature, cfg.ModeDocumentation),
+				utils.FormatArgDocumentation(cfg.ArgumentName, cfg.ArgumentDocumentation),
 			}))
 		return
 	}
 
-	modeCode, err := strconv.ParseUint(modeCodeString, uintBase, uintBitSize)
-	if err != nil || modeCode > modeMaxValue || modeCode < modeMinValue {
+	modeCode, err := strconv.ParseUint(modeCodeString, constants.UintBase, constants.UintBitSize)
+	if err != nil || modeCode > constants.ModeMaxValue || modeCode < constants.ModeMinValue {
 		fmt.Println("Wrong mode flag argument")
 		return
 	}
 
-	durationValue, err := strconv.ParseUint(flag.Arg(0), uintBase, uintBitSize)
+	durationValue, err := strconv.ParseUint(flag.Arg(0), constants.UintBase, constants.UintBitSize)
 	if err != nil {
 		fmt.Println("Wrong duration argument")
 		return
 	}
 
-	duration, err := calculateDuration(durationValue, modeCode)
+	duration, err := utils.CalculateDuration(durationValue, modeCode)
 
 	time.Sleep(duration)
 }
